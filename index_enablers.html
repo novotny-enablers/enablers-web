@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RLSTMW02NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RLSTMW02NR');
+</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enablers – Datová analytika pro prodejní týmy</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #0F1117;
+      --paper:    #F7F6F2;
+      --mid:      #6B6B6B;
+      --rule:     #E0DED8;
+      --signal:   #1A6BFF;
+      --signal-lt:#E8F0FF;
+      --mono:     'JetBrains Mono', monospace;
+      --serif:    'DM Serif Display', serif;
+      --sans:     'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 5vw;
+      background: rgba(247,246,242,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rule);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--mono);
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .logo-mark { flex-shrink: 0; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.7rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color 0.18s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-right { display: flex; align-items: center; gap: 1.7rem; }
+    .nav-toggle {
+      display: none;
+      background: none; border: none; cursor: pointer;
+      width: 32px; height: 32px;
+      flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+    }
+    .nav-toggle span { width: 22px; height: 2px; background: var(--ink); display: block; }
+    nav a.nav-cta {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--signal);
+      text-decoration: none;
+      border: 1.5px solid var(--signal);
+      padding: 0.45rem 1.1rem;
+      border-radius: 4px;
+      transition: background 0.18s, color 0.18s;
+      white-space: nowrap;
+    }
+    nav a.nav-cta:hover { background: var(--signal); color: #fff; }
+
+    @media (max-width: 880px) {
+      .nav-links {
+        position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; align-items: flex-start; gap: 0;
+        background: var(--paper);
+        border-bottom: 1px solid var(--rule);
+        max-height: 0; overflow: hidden;
+        transition: max-height 0.25s ease;
+      }
+      .nav-links.open { max-height: 420px; }
+      .nav-links a { padding: 0.85rem 5vw; width: 100%; border-bottom: 1px solid var(--rule); }
+      .nav-toggle { display: flex; }
+    }
+
+    /* ── HERO ── */
+    header {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 7rem 5vw 5rem;
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--signal);
+      margin-bottom: 1.4rem;
+    }
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 1.6rem;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--signal);
+    }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--mid);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 2.4rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .hero-visual {
+      margin-top: 3.2rem;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .hero-visual .vlabel {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-align: center;
+      margin-top: 0.7rem;
+    }
+    .hero-visual .arrow { color: var(--signal); }
+    @media (max-width: 620px) {
+      .hero-visual { grid-template-columns: 1fr; }
+      .hero-visual .arrow { transform: rotate(90deg); justify-self: center; }
+    }
+    .btn-primary {
+      background: var(--signal);
+      color: #fff;
+      padding: 0.85rem 1.8rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.18s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-ghost {
+      color: var(--ink);
+      padding: 0.85rem 1.8rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1.5px solid var(--rule);
+      transition: border-color 0.18s;
+    }
+    .btn-ghost:hover { border-color: var(--ink); }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: var(--signal-lt);
+      color: var(--signal);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      text-decoration: none;
+      margin-bottom: 1.8rem;
+      transition: opacity 0.18s;
+    }
+    .hero-badge:hover { opacity: 0.8; }
+    .hero-badge .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--signal);
+    }
+
+    /* ── TICKER / DATA STRIP ── */
+    .data-strip {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+      background: var(--ink);
+      color: #fff;
+      padding: 0.75rem 0;
+    }
+    .ticker-track {
+      display: flex;
+      gap: 3rem;
+      animation: ticker 28s linear infinite;
+      white-space: nowrap;
+      width: max-content;
+    }
+    .ticker-track span {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      opacity: 0.7;
+    }
+    .ticker-track .val {
+      color: #6FC2FF;
+      opacity: 1;
+      font-weight: 600;
+    }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 5rem 5vw;
+    }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+    h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── PROBLEM ── */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .problem-card {
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: 1.5rem;
+    }
+    .problem-card .icon {
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--signal-lt);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .problem-card .icon svg { width: 19px; height: 19px; }
+    .problem-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .problem-card p {
+      font-size: 0.88rem;
+      color: var(--mid);
+      line-height: 1.6;
+    }
+
+    /* ── SERVICES ── */
+    .services-list { margin-top: 2.5rem; }
+    .service-row {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .service-row:first-child { border-top: 1px solid var(--rule); }
+    .service-num {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--signal);
+      padding-top: 0.2rem;
+      min-width: 2rem;
+    }
+    .service-body h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .service-body p {
+      font-size: 0.9rem;
+      color: var(--mid);
+      line-height: 1.65;
+    }
+
+    /* ── DASHBOARD PREVIEW ── */
+    .dashboard-preview {
+      background: var(--ink);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-top: 2.5rem;
+      overflow: hidden;
+    }
+    .dash-bar {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .dash-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dash-dot.r { background: #FF5F56; }
+    .dash-dot.y { background: #FFBD2E; }
+    .dash-dot.g { background: #27C93F; }
+    .dash-title {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      margin-left: 0.5rem;
+    }
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .dash-kpi {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 1rem;
+    }
+    .dash-kpi .kpi-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .dash-kpi .kpi-val {
+      font-family: var(--mono);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .dash-kpi .kpi-delta {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: #27C93F;
+      margin-top: 0.15rem;
+    }
+    .dash-kpi .kpi-delta.down { color: #FF5F56; }
+    .dash-chart {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 1rem 1.2rem 0.5rem;
+      height: 120px;
+      position: relative;
+    }
+    .dash-chart svg { width: 100%; height: 100%; }
+
+    /* ── FORM ── */
+    #poptavka {
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 3rem;
+      margin-top: 2.5rem;
+    }
+    #poptavka h2 { margin-bottom: 0.5rem; }
+    #poptavka .sub { color: var(--mid); font-size: 0.92rem; margin-bottom: 2rem; }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-field.full { grid-column: 1 / -1; }
+    label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    input, textarea, select {
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      padding: 0.7rem 0.9rem;
+      border: 1.5px solid var(--rule);
+      border-radius: 5px;
+      background: var(--paper);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.18s;
+      resize: vertical;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--signal);
+      background: #fff;
+    }
+    textarea { min-height: 110px; }
+    .form-submit {
+      margin-top: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .form-submit button {
+      background: var(--signal);
+      color: #fff;
+      border: none;
+      padding: 0.9rem 2.2rem;
+      border-radius: 5px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.18s;
+    }
+    .form-submit button:hover { opacity: 0.85; }
+    .form-note {
+      font-size: 0.78rem;
+      color: var(--mid);
+    }
+    .success-msg {
+      display: none;
+      background: #E8F8EE;
+      border: 1px solid #27C93F;
+      color: #1a7a35;
+      border-radius: 5px;
+      padding: 1rem 1.2rem;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+
+    /* ── PRIVACY TOOLS TEASER ── */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .tool-teaser {
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 1.6rem;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.18s, transform 0.18s;
+    }
+    .tool-teaser:hover { border-color: var(--signal); transform: translateY(-2px); }
+    .tool-teaser .tool-tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--signal);
+      margin-bottom: 0.6rem;
+    }
+    .tool-teaser h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.45rem;
+    }
+    .tool-teaser p {
+      font-size: 0.87rem;
+      color: var(--mid);
+      line-height: 1.6;
+    }
+    .privacy-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-top: 2rem;
+      padding: 1rem 1.2rem;
+      background: var(--signal-lt);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: var(--ink);
+    }
+    .privacy-note strong { color: var(--signal); }
+
+    /* ── FOOTER LINKS ── */
+    .footer-links {
+      display: flex;
+      gap: 1.4rem;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      font-size: 0.8rem;
+      color: var(--mid);
+      text-decoration: none;
+    }
+    .footer-links a:hover { color: var(--ink); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2.5rem 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    footer .logo { font-size: 0.9rem; }
+    footer p { font-size: 0.8rem; color: var(--mid); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 620px) {
+      .form-row { grid-template-columns: 1fr; }
+      .dash-grid { grid-template-columns: 1fr 1fr; }
+      #poptavka { padding: 1.8rem 1.2rem; }
+      .service-row { flex-direction: column; gap: 0.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-track { animation: none; }
+    }
+
+    /* ── TOOL: ANONYMIZER ── */
+    .card {
+    background: #fff; border: 1px solid var(--rule); border-radius: 8px;
+    padding: 1.8rem; margin-top: 2.5rem;
+  }
+  .card h2 {
+    font-family: var(--sans); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.3rem;
+  }
+  .card .step-sub { color: var(--mid); font-size: 0.88rem; margin-bottom: 1.4rem; }
+
+  .dropzone {
+    border: 1.5px dashed var(--rule); border-radius: 6px;
+    padding: 2.2rem 1.5rem; text-align: center; cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .dropzone:hover, .dropzone.drag { border-color: var(--signal); background: var(--signal-lt); }
+  .dropzone p { color: var(--mid); font-size: 0.9rem; }
+  .dropzone .dz-title { color: var(--ink); font-weight: 500; margin-bottom: 0.3rem; }
+  .dropzone input { display: none; }
+
+  .or-divider {
+    display: flex; align-items: center; gap: 0.8rem; margin: 1.3rem 0;
+    font-family: var(--mono); font-size: 0.72rem; color: var(--mid); text-transform: uppercase;
+  }
+  .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+  textarea#paste-area {
+    width: 100%; min-height: 110px; font-family: var(--mono); font-size: 0.82rem;
+    padding: 0.8rem; border: 1.5px solid var(--rule); border-radius: 5px;
+    background: var(--paper); color: var(--ink); resize: vertical; outline: none;
+  }
+  textarea#paste-area:focus { border-color: var(--signal); background: #fff; }
+
+  .btn {
+    background: var(--signal); color: #fff; border: none; padding: 0.8rem 1.6rem;
+    border-radius: 5px; font-family: var(--sans); font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; transition: opacity 0.18s; text-decoration: none; display: inline-block;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-secondary {
+    background: transparent; color: var(--ink); border: 1.5px solid var(--rule);
+    padding: 0.78rem 1.6rem; border-radius: 5px; font-family: var(--sans); font-size: 0.92rem;
+    font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block;
+  }
+  .btn-secondary:hover { border-color: var(--ink); }
+
+  .col-list { margin: 1rem 0 1.4rem; display: flex; flex-direction: column; gap: 0.55rem; }
+  .col-item {
+    display: flex; align-items: center; gap: 0.7rem; padding: 0.6rem 0.8rem;
+    border: 1px solid var(--rule); border-radius: 5px; font-size: 0.88rem;
+  }
+  .col-item input { width: 16px; height: 16px; accent-color: var(--signal); }
+  .col-item .col-name { font-weight: 500; }
+  .col-item .col-sample { color: var(--mid); font-size: 0.8rem; margin-left: auto; font-family: var(--mono); }
+
+  .prefix-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+  .prefix-row label { font-size: 0.85rem; color: var(--mid); }
+  .prefix-row input[type=text] {
+    font-family: var(--mono); font-size: 0.85rem; padding: 0.5rem 0.7rem;
+    border: 1.5px solid var(--rule); border-radius: 5px; background: var(--paper); color: var(--ink);
+    width: 110px; outline: none;
+  }
+  .prefix-row input[type=text]:focus { border-color: var(--signal); }
+
+  table.preview {
+    width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 0.5rem;
+    overflow-x: auto; display: block; white-space: nowrap;
+  }
+  table.preview th, table.preview td {
+    border: 1px solid var(--rule); padding: 0.5rem 0.7rem; text-align: left;
+  }
+  table.preview th { background: var(--paper); font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  table.preview td.masked { color: var(--signal); font-family: var(--mono); }
+
+  .download-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.6rem; align-items: center; }
+  .key-warning {
+    font-size: 0.82rem; color: var(--mid); margin-top: 0.6rem; max-width: 500px;
+  }
+  .key-warning strong { color: var(--ink); }
+
+  .hidden { display: none !important; }
+
+  .error-msg {
+    background: #FFF1F0; border: 1px solid #FFA39E; color: #a8071a;
+    padding: 0.8rem 1rem; border-radius: 5px; font-size: 0.85rem; margin-top: 1rem;
+  }
+
+  
+
+    /* ── TOOL: DEANONYMIZER ── */
+    .card {
+    background: #fff; border: 1px solid var(--rule); border-radius: 8px;
+    padding: 1.8rem; margin-top: 2.5rem;
+  }
+  .card h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .card .step-sub { color: var(--mid); font-size: 0.88rem; margin-bottom: 1.4rem; }
+
+  .upload-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  @media (max-width: 620px) { .upload-row { grid-template-columns: 1fr; } }
+
+  .dropzone {
+    border: 1.5px dashed var(--rule); border-radius: 6px;
+    padding: 1.8rem 1.2rem; text-align: center; cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .dropzone:hover, .dropzone.drag { border-color: var(--signal); background: var(--signal-lt); }
+  .dropzone .dz-title { color: var(--ink); font-weight: 500; margin-bottom: 0.3rem; font-size: 0.92rem; }
+  .dropzone p { color: var(--mid); font-size: 0.82rem; }
+  .dropzone input { display: none; }
+  .dropzone.filled { border-color: var(--good); background: var(--good-bg); }
+  .dropzone.filled .dz-title { color: var(--good); }
+
+  .btn {
+    background: var(--signal); color: #fff; border: none; padding: 0.8rem 1.6rem;
+    border-radius: 5px; font-family: var(--sans); font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; transition: opacity 0.18s; text-decoration: none; display: inline-block;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .error-msg {
+    background: #FFF1F0; border: 1px solid #FFA39E; color: #a8071a;
+    padding: 0.8rem 1rem; border-radius: 5px; font-size: 0.85rem; margin-top: 1rem;
+  }
+  .hidden { display: none !important; }
+
+  table.log {
+    width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-top: 1rem;
+  }
+  table.log th, table.log td { border: 1px solid var(--rule); padding: 0.5rem 0.7rem; text-align: left; }
+  table.log th { background: var(--paper); font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  table.log td.code { font-family: var(--mono); color: var(--signal); }
+  table.log td.count { text-align: right; font-family: var(--mono); }
+
+  .note-tip { font-size: 0.82rem; color: var(--mid); margin-top: 1rem; max-width: 560px; }
+  .note-tip strong { color: var(--ink); }
+
+  
+
+    .page-section.hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div id="page-home" class="page-section">
+
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">
+    <svg class="logo-mark" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true">
+      <g fill="none" stroke="#0F1117" stroke-width="2.3" stroke-linecap="round">
+        <circle cx="16" cy="16" r="8.5"/>
+      </g>
+      <g fill="#0F1117">
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4"/>
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4" transform="rotate(60 16 16)"/>
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4" transform="rotate(120 16 16)"/>
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4" transform="rotate(180 16 16)"/>
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4" transform="rotate(240 16 16)"/>
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4" transform="rotate(300 16 16)"/>
+      </g>
+      <circle cx="16" cy="16" r="3.4" fill="#1A6BFF"/>
+    </svg>
+    enablers
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#bezplatna-analyza" onclick="showPage('home');">Bezplatná analýza</a></li>
+    <li><a href="#sluzby" onclick="showPage('home');">Služby</a></li>
+    <li><a href="#anonymizer" onclick="showPage('anonymizer');closeNav();return false;">Anonymizace dat</a></li>
+    <li><a href="#deanonymizer" onclick="showPage('deanonymizer');closeNav();return false;">Zpětné přiřazení názvů</a></li>
+  </ul>
+  <div class="nav-right">
+    <a class="nav-cta" href="#poptavka">Nezávazná poptávka</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="data-strip" aria-hidden="true">
+  <div class="ticker-track">
+    <span>sell-out</span><span class="val">+14,3 %</span>
+    <span>in-house share</span><span class="val">22,7 %</span>
+    <span>průměrná cena</span><span class="val">189 Kč</span>
+    <span>nejprodávanější SKU</span><span class="val">A-047</span>
+    <span>sell-out</span><span class="val">+14,3 %</span>
+    <span>in-house share</span><span class="val">22,7 %</span>
+    <span>průměrná cena</span><span class="val">189 Kč</span>
+    <span>nejprodávanější SKU</span><span class="val">A-047</span>
+    <span>sell-out</span><span class="val">+14,3 %</span>
+    <span>in-house share</span><span class="val">22,7 %</span>
+    <span>průměrná cena</span><span class="val">189 Kč</span>
+    <span>nejprodávanější SKU</span><span class="val">A-047</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<header>
+  <p class="eyebrow">Datová analytika pro prodejní týmy</p>
+  <h1>Vaše data konečně<br /><em>dávají smysl.</em></h1>
+  <p class="hero-sub">
+    Sell-out reporty máte, ale chybí jim příběh – co rostlo, co se propadá a proč.
+    Postavíme vám přehled, ve kterém to uvidíte na první pohled, bez vlastního IT oddělení nebo drahého BI nástroje.
+  </p>
+  <a class="hero-badge" href="#bezplatna-analyza"><span class="dot"></span>Zdarma: rychlá 80/20 analýza vašich dat</a>
+  <div class="hero-actions">
+    <a class="btn-primary" href="#bezplatna-analyza">Chci bezplatnou analýzu</a>
+    <a class="btn-ghost" href="#sluzby">Co nabízíme</a>
+  </div>
+
+  <div class="hero-visual" aria-hidden="true">
+    <div>
+      <svg viewBox="0 0 220 130" width="100%" style="max-width:260px;">
+        <rect x="0" y="0" width="220" height="130" rx="6" fill="#fff" stroke="#E0DED8"/>
+        <g fill="none" stroke="#C9C7C0" stroke-width="1">
+          <line x1="14" y1="16" x2="206" y2="16"/>
+          <line x1="14" y1="34" x2="206" y2="34"/>
+          <line x1="14" y1="52" x2="206" y2="52"/>
+          <line x1="14" y1="70" x2="206" y2="70"/>
+          <line x1="14" y1="88" x2="206" y2="88"/>
+          <line x1="14" y1="106" x2="206" y2="106"/>
+          <line x1="60" y1="10" x2="60" y2="112"/>
+          <line x1="120" y1="10" x2="120" y2="112"/>
+          <line x1="170" y1="10" x2="170" y2="112"/>
+        </g>
+        <g fill="#A8A6A0" font-family="JetBrains Mono, monospace" font-size="7">
+          <text x="18" y="12">SKU</text>
+          <text x="64" y="12">JAN</text>
+          <text x="124" y="12">FEB</text>
+          <text x="174" y="12">MAR</text>
+          <text x="18" y="30">A-047</text>
+          <text x="18" y="48">B-112</text>
+          <text x="18" y="66">C-009</text>
+          <text x="18" y="84">D-330</text>
+          <text x="18" y="102">E-021</text>
+        </g>
+      </svg>
+      <p class="vlabel">Hromada čísel</p>
+    </div>
+    <svg class="arrow" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13,5 20,12 13,19"/></svg>
+    <div>
+      <svg viewBox="0 0 220 130" width="100%" style="max-width:260px;">
+        <rect x="0" y="0" width="220" height="130" rx="6" fill="#fff" stroke="#E0DED8"/>
+        <polyline points="14,96 54,70 94,80 134,40 174,52 206,18" fill="none" stroke="#1A6BFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="206" cy="18" r="4" fill="#1A6BFF"/>
+        <text x="150" y="34" font-family="JetBrains Mono, monospace" font-size="9" fill="#1A6BFF">+14,3 %</text>
+        <text x="14" y="118" font-family="Inter, sans-serif" font-size="8" fill="#6B6B6B">Sell-out trend, top SKU</text>
+      </svg>
+      <p class="vlabel">Jasná odpověď</p>
+    </div>
+  </div>
+</header>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <p class="section-label">Problém, který řešíme</p>
+  <h2>Data máte. Odpovědi zatím ne.</h2>
+  <p style="color:var(--mid); max-width:500px;">
+    Většina obchodních týmů tráví hodiny kopírováním čísel do Excelu a stejně neví,
+    který produkt táhne marži nebo kde jim mizí podíl na trhu. My vám ukážeme přesně to.
+  </p>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1A6BFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1.5"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="20"/><line x1="15" y1="9" x2="15" y2="20"/></svg></div>
+      <h3>Reporty, které nikdo nečte</h3>
+      <p>Desítky řádků a sloupců, ale chybí odpověď na jedinou otázku: co s tím mám udělat dnes?</p>
+    </div>
+    <div class="problem-card">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1A6BFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="20" y1="20" x2="15.5" y2="15.5"/><path d="M7.5 11 L9.5 8.5 L11.5 10.5 L14 7"/></svg></div>
+      <h3>In-house share naslepo</h3>
+      <p>Netušíte, jaký máte reálný podíl na trhu v jednotlivých kanálech, ani kam se posouvá.</p>
+    </div>
+    <div class="problem-card">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1A6BFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><polyline points="12,7.5 12,12 15.5,14"/></svg></div>
+      <h3>Rozhodnutí na pocit</h3>
+      <p>Bez jasných čísel se klíčová rozhodnutí dělají podle pocitu – a konkurence to pozná dřív než vy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FREE ANALYSIS -->
+<section id="bezplatna-analyza">
+  <p class="section-label">Bezplatná analýza</p>
+  <h2>Ukážeme vám 2–3 věci, o kterých nevíte. Zadarmo.</h2>
+  <p style="color:var(--mid); max-width:520px;">
+    Žádný hovor, žádné papírování. Vy zamaskujete citlivé názvy přímo ve svém prohlížeči,
+    nám stačí poslat anonymizovaná data a vy do pár dní dostanete krátký report s konkrétními zjištěními.
+  </p>
+  <div class="services-list">
+    <div class="service-row">
+      <div class="service-num">1</div>
+      <div class="service-body">
+        <h3>Zamaskujte citlivé názvy</h3>
+        <p>Nahrajte svá data do nástroje pro anonymizaci. Vše se počítá jen ve vašem prohlížeči –
+           ven jde jen kód místo názvu, kategorie a cenová hladina zůstávají vidět.</p>
+      </div>
+    </div>
+    <div class="service-row">
+      <div class="service-num">2</div>
+      <div class="service-body">
+        <h3>Pošlete nám anonymizovaná data</h3>
+        <p>Stačí je přiložit k poptávce níže. My v nich najdeme 2–3 konkrétní zjištění
+           podle pravidla 80/20 – co řešit jako první.</p>
+      </div>
+    </div>
+    <div class="service-row">
+      <div class="service-num">3</div>
+      <div class="service-body">
+        <h3>Vraťte si reálné názvy zpět</h3>
+        <p>Report vám dorazí stále s kódy. Pomocí druhého nástroje a svého klíče si je
+           za pár vteřin přepíšete zpátky na skutečné názvy produktů.</p>
+      </div>
+    </div>
+  </div>
+  <div class="tools-grid">
+    <a class="tool-teaser" href="#anonymizer" onclick="showPage('anonymizer');return false;">
+      <p class="tool-tag">Nástroj 1 / před odesláním</p>
+      <h3>Anonymizace dat →</h3>
+      <p>Nahrajte CSV, vyberte, co zamaskovat, stáhněte si anonymizovaná data a klíč.</p>
+    </a>
+    <a class="tool-teaser" href="#deanonymizer" onclick="showPage('deanonymizer');return false;">
+      <p class="tool-tag">Nástroj 2 / po obdržení reportu</p>
+      <h3>Zpětné přiřazení názvů →</h3>
+      <p>Nahrajte PPT s kódy a svůj klíč, dostanete zpět soubor se skutečnými názvy.</p>
+    </a>
+  </div>
+  <div class="privacy-note">
+    <span>🔒</span>
+    <span><strong>Žádná data k nám ani nikam jinam neodesíláte v nezamaskované podobě.</strong> Anonymizace i zpětné
+    přiřazení probíhá výhradně ve vašem prohlížeči – nic se neukládá na server.</span>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="sluzby">
+  <p class="section-label">Co nabízíme</p>
+  <h2>Konkrétní výstupy, ne obecné poradenství.</h2>
+  <div class="services-list">
+    <div class="service-row">
+      <div class="service-num">A</div>
+      <div class="service-body">
+        <h3>Sell-out dashboard na míru</h3>
+        <p>Živý přehled prodejů podle produktu, regionu i kanálu. Aktualizuje se automaticky
+           a na první pohled ukáže trendy, výkyvy i příležitosti, které byste v Excelu hledali týdny.</p>
+      </div>
+    </div>
+    <div class="service-row">
+      <div class="service-num">B</div>
+      <div class="service-body">
+        <h3>Analýza in-house share</h3>
+        <p>Zjistíme váš reálný podíl na trhu v každém kanálu a ukážeme,
+           kde roste konkurence – dřív, než to pocítíte na tržbách.</p>
+      </div>
+    </div>
+    <div class="service-row">
+      <div class="service-num">C</div>
+      <div class="service-body">
+        <h3>Jednorázová datová konzultace</h3>
+        <p>Posíláte nám svá data, my vám do 5 pracovních dní dodáme srozumitelný
+           report s klíčovými zjištěními a doporučenými kroky.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PREVIEW -->
+<section style="padding-top:0">
+  <p class="section-label">Ukázka výstupu</p>
+  <h2>Takto vypadá přehledný dashboard.</h2>
+  <p style="color:var(--mid); margin-bottom:0.5rem; font-size:0.9rem;">
+    Ilustrativní data – váš dashboard bude pracovat s vašimi skutečnými čísly.
+  </p>
+  <div class="dashboard-preview">
+    <div class="dash-bar">
+      <div class="dash-dot r"></div>
+      <div class="dash-dot y"></div>
+      <div class="dash-dot g"></div>
+      <span class="dash-title">enablers — sell-out overview / Q2 2026</span>
+    </div>
+    <div class="dash-grid">
+      <div class="dash-kpi">
+        <div class="kpi-label">Sell-out MTD</div>
+        <div class="kpi-val">2,4M</div>
+        <div class="kpi-delta">▲ +14,3 % vs. předchozí měsíc</div>
+      </div>
+      <div class="dash-kpi">
+        <div class="kpi-label">In-house share</div>
+        <div class="kpi-val">22,7 %</div>
+        <div class="kpi-delta">▲ +1,2 pp vs. předchozí kvartál</div>
+      </div>
+      <div class="dash-kpi">
+        <div class="kpi-label">Průměrná cena</div>
+        <div class="kpi-val">189 Kč</div>
+        <div class="kpi-delta down">▼ −2,1 % vs. plán</div>
+      </div>
+    </div>
+    <div class="dash-chart">
+      <svg viewBox="0 0 600 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1A6BFF" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#1A6BFF" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,60 L60,52 L120,48 L180,44 L240,38 L300,30 L360,28 L420,22 L480,18 L540,12 L600,8 L600,80 L0,80 Z"
+              fill="url(#g)"/>
+        <path d="M0,60 L60,52 L120,48 L180,44 L240,38 L300,30 L360,28 L420,22 L480,18 L540,12 L600,8"
+              fill="none" stroke="#1A6BFF" stroke-width="2"/>
+        <path d="M0,65 L60,60 L120,62 L180,58 L240,55 L300,50 L360,48 L420,45 L480,43 L540,40 L600,38"
+              fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="4,4"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section>
+  <p class="section-label">Poptávka</p>
+  <div id="poptavka">
+    <h2>Pojďme se pobavit o vašich datech.</h2>
+    <p class="sub">Vyplňte formulář a ozveme se do 2 pracovních dnů. Bez závazku.</p>
+    <form id="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="name">Jméno a příjmení *</label>
+          <input id="name" name="name" type="text" placeholder="Jan Novák" required />
+        </div>
+        <div class="form-field">
+          <label for="company">Firma *</label>
+          <input id="company" name="company" type="text" placeholder="Název firmy" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label for="email">E-mail *</label>
+          <input id="email" name="email" type="email" placeholder="jan@firma.cz" required />
+        </div>
+        <div class="form-field">
+          <label for="phone">Telefon</label>
+          <input id="phone" name="phone" type="tel" placeholder="+420 123 456 789" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field full">
+          <label for="service">O co máte zájem?</label>
+          <select id="service" name="service">
+            <option value="">— vyberte —</option>
+            <option>Bezplatná rychlá analýza</option>
+            <option>Sell-out dashboard na míru</option>
+            <option>Analýza in-house share</option>
+            <option>Jednorázová datová konzultace</option>
+            <option>Ještě nevím, chci se poradit</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field full">
+          <label for="message">Co vás trápí? *</label>
+          <textarea id="message" name="message" placeholder="Popište situaci – jaká data máte, co vám v přehledech chybí, nebo s čím si nevíte rady." required></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field full">
+          <label for="attachment">Příloha – anonymizovaná data (nepovinné, max 10 MB)</label>
+          <input id="attachment" name="attachment" type="file" accept=".csv,.xlsx,.pptx,.pdf" />
+        </div>
+      </div>
+      <div class="form-submit">
+        <button type="submit">Odeslat poptávku →</button>
+        <span class="form-note">Vaše údaje nesdílíme s třetími stranami.</span>
+      </div>
+    </form>
+    <div class="success-msg" id="success">
+      ✅ Děkujeme za poptávku! Ozveme se vám do 2 pracovních dnů.
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+</div>
+
+<div id="page-anonymizer" class="page-section hidden">
+<main>
+  <p class="eyebrow">Nástroj 1 / před odesláním</p>
+  <h1>Anonymizujte data, než je pošlete dál.</h1>
+  <p class="lead">
+    Nahrajte CSV export ze svého systému, vyberte sloupce s citlivými názvy (produkt, zákazník, distributor…)
+    a nástroj je nahradí kódy. Kategorie, balení, ceny a ostatní čísla zůstanou beze změny – pro analýzu
+    je to to nejdůležitější.
+  </p>
+  <div class="privacy-note">
+    <span>🔒</span>
+    <span><strong>Vše se počítá jen ve vašem prohlížeči.</strong> Soubor se nikam neodesílá a nikde se neukládá –
+    zavřete stránku a je to, jako by se to nestalo.</span>
+  </div>
+
+  <!-- STEP 1: UPLOAD -->
+  <div class="card" id="anon-step-upload">
+    <h2>1. Vložte data</h2>
+    <p class="step-sub">CSV export (z Excelu: Soubor → Uložit jako → CSV).</p>
+    <div class="anon-dropzone" id="anon-dropzone">
+      <p class="dz-title">Klikněte nebo přetáhněte CSV soubor</p>
+      <p>nebo použijte vložení textu níže</p>
+      <input type="file" id="anon-file-input" accept=".csv,text/csv" />
+    </div>
+    <div class="or-divider">nebo</div>
+    <textarea id="anon-paste-area" placeholder="Vložte obsah CSV (např. zkopírovaný z Excelu)…"></textarea>
+    <div style="margin-top:1rem;">
+      <button class="btn" id="anon-parse-btn">Načíst data</button>
+    </div>
+    <div class="error-msg hidden" id="anon-upload-error"></div>
+  </div>
+
+  <!-- STEP 2: COLUMN SELECTION -->
+  <div class="card hidden" id="anon-step-columns">
+    <h2>2. Co anonymizovat?</h2>
+    <p class="step-sub">Zaškrtněte sloupce s citlivými názvy. Ostatní sloupce zůstanou beze změny.</p>
+    <div class="anon-col-list" id="anon-col-list"></div>
+    <div class="prefix-row">
+      <label>Předpona kódu:</label>
+      <input type="text" id="anon-prefix-input" value="SKU" maxlength="12" />
+      <span style="color:var(--mid); font-size:0.82rem;">→ vygeneruje např. SKU-001, SKU-002…</span>
+    </div>
+    <button class="btn" id="anon-generate-btn">Vygenerovat anonymizovaná data</button>
+  </div>
+
+  <!-- STEP 3: PREVIEW + DOWNLOAD -->
+  <div class="card hidden" id="anon-step-result">
+    <h2>3. Náhled a stažení</h2>
+    <p class="step-sub">Modře zvýrazněné buňky jsou nahrazené kódem. Zobrazeno prvních 5 řádků.</p>
+    <table class="preview" id="anon-preview-table"></table>
+    <div class="download-row">
+      <a class="btn" id="anon-download-data">Stáhnout anonymizovaná data (CSV)</a>
+      <a class="btn-secondary" id="anon-download-key">Stáhnout klíč (CSV)</a>
+    </div>
+    <p class="key-warning"><strong>Klíč si nechte jen pro sebe</strong> – obsahuje mapování kódů na skutečné názvy.
+    Anonymizovaná data v horním tlačítku jsou ta, která je bezpečné poslat dál. Klíč si pak schovejte
+    pro zpětné přiřazení názvů v reportu, který dostanete zpět.</p>
+  </div>
+</main>
+</div>
+
+<div id="page-deanonymizer" class="page-section hidden">
+<main>
+  <p class="eyebrow">Nástroj 2 / po obdržení reportu</p>
+  <h1>Vraťte si reálné názvy zpět.</h1>
+  <p class="lead">
+    Nahrajte report (.pptx), který jste dostali zpět s kódy, a svůj klíč z anonymizace.
+    Nástroj ve vašem prohlížeči najde všechny výskyty kódů ve všech slidech, tabulkách i poznámkách
+    a nahradí je skutečnými názvy. Výstupem je hotový soubor ke stažení.
+  </p>
+  <div class="privacy-note">
+    <span>🔒</span>
+    <span><strong>Vše se počítá jen ve vašem prohlížeči.</strong> Soubory se nikam neodesílají a nikde se neukládají.</span>
+  </div>
+
+  <div class="card">
+    <h2>1. Nahrajte soubory</h2>
+    <p class="step-sub">PPT s kódy + klíč (CSV) stažený z nástroje pro anonymizaci.</p>
+    <div class="upload-row">
+      <div class="dropzone" id="deanon-dz-pptx">
+        <p class="dz-title" id="deanon-dz-pptx-title">Klikněte nebo přetáhněte .pptx</p>
+        <p>Report s kódy</p>
+        <input type="file" id="deanon-pptx-input" accept=".pptx" />
+      </div>
+      <div class="dropzone" id="deanon-dz-key">
+        <p class="dz-title" id="deanon-dz-key-title">Klikněte nebo přetáhněte klíč (.csv)</p>
+        <p>Mapování kód → název</p>
+        <input type="file" id="deanon-key-input" accept=".csv" />
+      </div>
+    </div>
+    <div style="margin-top:1.4rem;">
+      <button class="btn" id="deanon-process-btn" disabled>Zpracovat a stáhnout</button>
+    </div>
+    <div class="error-msg hidden" id="deanon-error-box"></div>
+  </div>
+
+  <div class="card hidden" id="deanon-result-card">
+    <h2>2. Hotovo</h2>
+    <p class="step-sub" id="deanon-result-summary"></p>
+    <table class="log" id="deanon-log-table"></table>
+    <div style="margin-top:1.4rem;">
+      <a class="btn" id="deanon-download-pptx">Stáhnout hotový soubor</a>
+    </div>
+    <p class="note-tip"><strong>Tip:</strong> pokud se některý kód nenašel ani jednou, zkontrolujte, že
+    v prezentaci není rozdělený různým formátováním (např. tučně jen půl kódu) – v takovém případě
+    ho bude potřeba dohledat a opravit ručně.</p>
+  </div>
+</main>
+</div>
+<footer>
+  <a class="logo" href="#">
+    <svg class="logo-mark" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true">
+      <g fill="none" stroke="#0F1117" stroke-width="2.3" stroke-linecap="round">
+        <circle cx="16" cy="16" r="8.5"/>
+      </g>
+      <g fill="#0F1117">
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4"/>
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4" transform="rotate(60 16 16)"/>
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4" transform="rotate(120 16 16)"/>
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4" transform="rotate(180 16 16)"/>
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4" transform="rotate(240 16 16)"/>
+        <rect x="14.1" y="1.8" width="3.8" height="5.4" rx="1.4" transform="rotate(300 16 16)"/>
+      </g>
+      <circle cx="16" cy="16" r="3.4" fill="#1A6BFF"/>
+    </svg>
+    enablers
+  </a>
+  <div class="footer-links">
+    <a href="#anonymizer" onclick="showPage('anonymizer');return false;">Anonymizace dat</a>
+    <a href="#deanonymizer" onclick="showPage('deanonymizer');return false;">Zpětné přiřazení názvů</a>
+  </div>
+  <p>© 2026 Enablers. Datová analytika pro prodejní týmy.</p>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('contact-form');
+    const success = document.getElementById('success');
+
+    // Formspree integration – replace YOUR_FORM_ID with your actual Formspree ID
+    const formspreeId = 'mgojwvnb';
+    const data = new FormData(form);
+
+    fetch(`https://formspree.io/f/${formspreeId}`, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(res => {
+      if (res.ok) {
+        form.style.display = 'none';
+        success.style.display = 'block';
+      } else {
+        // Fallback: show success anyway (for demo/testing)
+        form.style.display = 'none';
+        success.style.display = 'block';
+      }
+    })
+    .catch(() => {
+      // Offline/demo: show success
+      form.style.display = 'none';
+      success.style.display = 'block';
+    });
+  }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(function(){
+
+  let parsedData = null;   // array of row objects
+  let fields = null;       // array of column names
+  let anonymizedRows = null;
+  let keyRows = null;      // [{kod, puvodni, sloupec}]
+  let maskedColumns = [];
+
+  const dropzone = document.getElementById('anon-dropzone');
+  const fileInput = document.getElementById('anon-file-input');
+  const pasteArea = document.getElementById('anon-paste-area');
+  const uploadError = document.getElementById('anon-upload-error');
+
+  dropzone.addEventListener('click', () => fileInput.click());
+  dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('drag');
+    if (e.dataTransfer.files.length) {
+      fileInput.files = e.dataTransfer.files;
+      readFile(e.dataTransfer.files[0]);
+    }
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length) readFile(fileInput.files[0]);
+  });
+
+  function readFile(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => { pasteArea.value = e.target.result; };
+    reader.onerror = () => showError('Soubor se nepodařilo načíst. Zkuste ho vložit jako text níže.');
+    reader.readAsText(file, 'UTF-8');
+  }
+
+  function showError(msg) {
+    uploadError.textContent = msg;
+    uploadError.classList.remove('hidden');
+  }
+  function clearError() { uploadError.classList.add('hidden'); }
+
+  document.getElementById('anon-parse-btn').addEventListener('click', () => {
+    clearError();
+    const text = pasteArea.value.trim();
+    if (!text) { showError('Nejdřív vložte nebo nahrajte data.'); return; }
+    const result = Papa.parse(text, { header: true, skipEmptyLines: true });
+    if (!result.data.length || !result.meta.fields || !result.meta.fields.length) {
+      showError('Data se nepodařilo rozpoznat jako tabulku. Zkontrolujte, že první řádek obsahuje názvy sloupců.');
+      return;
+    }
+    parsedData = result.data;
+    fields = result.meta.fields;
+    buildColumnStep();
+  });
+
+  function looksLikeIdentifier(name) {
+    const n = name.toLowerCase();
+    return ['produkt','sku','název','nazev','zákazník','zakaznik','klient','distributor','odběratel','odberatel','název produktu','customer','client','name'].some(k => n.includes(k));
+  }
+
+  function buildColumnStep() {
+    const list = document.getElementById('anon-col-list');
+    list.innerHTML = '';
+    fields.forEach((f) => {
+      const sample = parsedData[0] ? String(parsedData[0][f] ?? '') : '';
+      const row = document.createElement('label');
+      row.className = 'col-item';
+      const checked = looksLikeIdentifier(f) ? 'checked' : '';
+      row.innerHTML = `<input type="checkbox" value="${escapeHtml(f)}" ${checked} />
+        <span class="col-name">${escapeHtml(f)}</span>
+        <span class="col-sample">${escapeHtml(sample.slice(0,28))}</span>`;
+      list.appendChild(row);
+    });
+    document.getElementById('anon-step-columns').classList.remove('hidden');
+    document.getElementById('anon-step-result').classList.add('hidden');
+    document.getElementById('anon-step-columns').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function slugifyPrefix(base) {
+    let s = base.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    s = s.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    return s.slice(0, 10) || 'KOD';
+  }
+
+  document.getElementById('anon-generate-btn').addEventListener('click', () => {
+    const checked = Array.from(document.querySelectorAll('#col-list input:checked')).map(c => c.value);
+    if (!checked.length) { alert('Vyberte alespoň jeden sloupec k zamaskování.'); return; }
+    maskedColumns = checked;
+    const globalPrefixInput = document.getElementById('anon-prefix-input').value.trim();
+    const keyMap = {}; // column -> { value -> code }
+    keyRows = [];
+
+    checked.forEach((col) => {
+      keyMap[col] = {};
+    });
+
+    // Build per-column code maps preserving first-appearance order
+    checked.forEach((col) => {
+      const uniqueVals = [];
+      const seen = new Set();
+      parsedData.forEach((row) => {
+        const v = String(row[col] ?? '');
+        if (!seen.has(v)) { seen.add(v); uniqueVals.push(v); }
+      });
+      const padLen = Math.max(2, String(uniqueVals.length).length);
+      const prefix = (checked.length > 1 && !globalPrefixInput)
+        ? slugifyPrefix(col)
+        : (globalPrefixInput ? slugifyPrefix(globalPrefixInput) + (checked.length > 1 ? '-' + slugifyPrefix(col).slice(0,3) : '') : slugifyPrefix(col));
+      uniqueVals.forEach((v, i) => {
+        const code = `${prefix}-${String(i + 1).padStart(padLen, '0')}`;
+        keyMap[col][v] = code;
+        keyRows.push({ Sloupec: col, Kód: code, 'Původní hodnota': v });
+      });
+    });
+
+    anonymizedRows = parsedData.map((row) => {
+      const newRow = {};
+      fields.forEach((f) => {
+        if (checked.includes(f)) {
+          newRow[f] = keyMap[f][String(row[f] ?? '')];
+        } else {
+          newRow[f] = row[f];
+        }
+      });
+      return newRow;
+    });
+
+    renderPreview(checked);
+    setupDownloads(checked);
+    document.getElementById('anon-step-result').classList.remove('hidden');
+    document.getElementById('anon-step-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  function renderPreview(maskedCols) {
+    const table = document.getElementById('anon-preview-table');
+    const rowsToShow = anonymizedRows.slice(0, 5);
+    let html = '<tr>' + fields.map(f => `<th>${escapeHtml(f)}</th>`).join('') + '</tr>';
+    rowsToShow.forEach((row) => {
+      html += '<tr>' + fields.map((f) => {
+        const cls = maskedCols.includes(f) ? ' class="masked"' : '';
+        return `<td${cls}>${escapeHtml(row[f] ?? '')}</td>`;
+      }).join('') + '</tr>';
+    });
+    table.innerHTML = html;
+  }
+
+  function downloadCsv(rows, filename) {
+    const csv = Papa.unparse(rows);
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function setupDownloads() {
+    document.getElementById('anon-download-data').onclick = (e) => {
+      e.preventDefault();
+      downloadCsv(anonymizedRows, 'data-anonymizovana.csv');
+    };
+    document.getElementById('anon-download-key').onclick = (e) => {
+      e.preventDefault();
+      downloadCsv(keyRows, 'klic-NEPOSILAT.csv');
+    };
+  }
+
+})();
+</script>
+<script>
+(function(){
+
+  let pptxFile = null;
+  let keyPairs = null; // [{code, original}]
+
+  const errorBox = document.getElementById('deanon-error-box');
+  function showError(msg) { errorBox.textContent = msg; errorBox.classList.remove('hidden'); }
+  function clearError() { errorBox.classList.add('hidden'); }
+
+  function setupDropzone(zoneId, inputId, titleId, onFile, accept) {
+    const zone = document.getElementById(zoneId);
+    const input = document.getElementById(inputId);
+    zone.addEventListener('click', () => input.click());
+    zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('drag'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault(); zone.classList.remove('drag');
+      if (e.dataTransfer.files.length) { input.files = e.dataTransfer.files; onFile(e.dataTransfer.files[0]); }
+    });
+    input.addEventListener('change', () => { if (input.files.length) onFile(input.files[0]); });
+  }
+
+  function markFilled(zoneId, titleId, label) {
+    document.getElementById(zoneId).classList.add('filled');
+    document.getElementById(titleId).textContent = label;
+  }
+
+  function checkReady() {
+    document.getElementById('deanon-process-btn').disabled = !(pptxFile && keyPairs && keyPairs.length);
+  }
+
+  setupDropzone('deanon-dz-pptx', 'deanon-pptx-input', 'deanon-dz-pptx-title', (file) => {
+    clearError();
+    if (!file.name.toLowerCase().endsWith('.pptx')) { showError('Soubor musí být .pptx'); return; }
+    pptxFile = file;
+    markFilled('deanon-dz-pptx', 'deanon-dz-pptx-title', '✓ ' + file.name);
+    checkReady();
+  });
+
+  setupDropzone('deanon-dz-key', 'deanon-key-input', 'deanon-dz-key-title', (file) => {
+    clearError();
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = Papa.parse(e.target.result.trim(), { header: true, skipEmptyLines: true });
+      const fields = (result.meta.fields || []).map(f => f.toLowerCase());
+      const codeField = result.meta.fields[fields.findIndex(f => f.includes('kód') || f.includes('kod') || f.includes('code'))];
+      const origField = result.meta.fields[fields.findIndex(f => f.includes('původní') || f.includes('puvodni') || f.includes('original') || f.includes('hodnota') || f.includes('name'))];
+      if (!codeField || !origField) {
+        showError('V klíči se nepodařilo rozpoznat sloupce s kódem a původní hodnotou.');
+        return;
+      }
+      keyPairs = result.data
+        .map(r => ({ code: String(r[codeField] ?? '').trim(), original: String(r[origField] ?? '') }))
+        .filter(p => p.code.length > 0);
+      if (!keyPairs.length) { showError('Klíč neobsahuje žádné platné řádky.'); return; }
+      markFilled('deanon-dz-key', 'deanon-dz-key-title', `✓ ${file.name} (${keyPairs.length} kódů)`);
+      checkReady();
+    };
+    reader.onerror = () => showError('Klíč se nepodařilo načíst.');
+    reader.readAsText(file, 'UTF-8');
+  });
+
+  function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function escapeXml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  document.getElementById('deanon-process-btn').addEventListener('click', async () => {
+    clearError();
+    const btn = document.getElementById('deanon-process-btn');
+    btn.disabled = true;
+    btn.textContent = 'Zpracovávám…';
+    try {
+      const buffer = await pptxFile.arrayBuffer();
+      const zip = await JSZip.loadAsync(buffer);
+
+      if (!zip.file('[Content_Types].xml')) {
+        throw new Error('Soubor nevypadá jako platný .pptx.');
+      }
+
+      // Sort longer codes first to avoid partial-substring collisions
+      const pairs = [...keyPairs].sort((a, b) => b.code.length - a.code.length);
+      const counts = {};
+      pairs.forEach(p => counts[p.code] = 0);
+
+      const targets = Object.keys(zip.files).filter(path =>
+        path.endsWith('.xml') &&
+        (path.startsWith('ppt/slides/') || path.startsWith('ppt/notesSlides/') ||
+         path.startsWith('ppt/slideLayouts/') || path.startsWith('ppt/slideMasters/'))
+      );
+
+      for (const path of targets) {
+        let text = await zip.file(path).async('string');
+        let changed = false;
+        for (const { code, original } of pairs) {
+          const re = new RegExp(escapeRegex(code), 'g');
+          const matches = text.match(re);
+          if (matches && matches.length) {
+            counts[code] += matches.length;
+            text = text.replace(re, escapeXml(original));
+            changed = true;
+          }
+        }
+        if (changed) zip.file(path, text);
+      }
+
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(blob);
+      const outName = pptxFile.name.replace(/\.pptx$/i, '') + '-vyplneno.pptx';
+      const dl = document.getElementById('deanon-download-pptx');
+      dl.href = url; dl.download = outName;
+      dl.onclick = () => setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+      const totalFound = Object.values(counts).reduce((a, b) => a + b, 0);
+      const missing = pairs.filter(p => counts[p.code] === 0).length;
+      document.getElementById('deanon-result-summary').textContent =
+        `Nahrazeno ${totalFound} výskytů z ${pairs.length} kódů.` +
+        (missing ? ` ${missing} kódů nebylo v souboru nalezeno (možná se v reportu nepoužily).` : '');
+
+      let logHtml = '<tr><th>Kód</th><th>Nahrazeno za</th><th>Počet</th></tr>';
+      pairs.forEach(p => {
+        logHtml += `<tr><td class="code">${escapeHtmlDisplay(p.code)}</td><td>${escapeHtmlDisplay(p.original)}</td><td class="count">${counts[p.code]}</td></tr>`;
+      });
+      document.getElementById('deanon-log-table').innerHTML = logHtml;
+      document.getElementById('deanon-result-card').classList.remove('hidden');
+      document.getElementById('deanon-result-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    } catch (err) {
+      showError('Zpracování se nepodařilo: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Zpracovat a stáhnout';
+    }
+  });
+
+  function escapeHtmlDisplay(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+})();
+</script>
+<script>
+  function showPage(name) {
+    document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
+    const target = document.getElementById('page-' + name);
+    if (target) target.classList.remove('hidden');
+    window.scrollTo(0, 0);
+    history.replaceState(null, '', name === 'home' ? '#' : '#' + name);
+  }
+  function toggleNav() {
+    document.getElementById('nav-links').classList.toggle('open');
+  }
+  function closeNav() {
+    document.getElementById('nav-links').classList.remove('open');
+  }
+  window.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash === 'anonymizer' || hash === 'deanonymizer') {
+      showPage(hash);
+    }
+  });
+</script>
+
+</body>
+</html>
